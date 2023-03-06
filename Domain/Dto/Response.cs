@@ -28,6 +28,6 @@ namespace Domain.Dto
         public bool Succeded { get; set; }
         public string Message { get; set; }
         public T Result { get; set; }
-
+        //hola
     }
 }
