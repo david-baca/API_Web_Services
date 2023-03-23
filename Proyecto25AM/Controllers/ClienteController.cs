@@ -6,7 +6,7 @@ using Proyecto25AM.Services.Services;
 namespace David_Stephen.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("clientes")]
 
     public class ClienteController : Controller
     {
