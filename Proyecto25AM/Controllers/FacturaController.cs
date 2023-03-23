@@ -1,8 +1,8 @@
 ﻿using Domain.Dto;
 using Microsoft.AspNetCore.Mvc;
-using David_Stephen.Services.IServices;
+using Proyecto25AM.Services.IServices;
 
-namespace David_Stephen.Controllers
+namespace Proyecto25AM.Controllers
 {
     [ApiController]
     [Route("[controller]")]

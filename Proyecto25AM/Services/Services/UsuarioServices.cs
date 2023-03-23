@@ -2,10 +2,10 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using David_Stephen.Context;
-using David_Stephen.Services.Iservices;
+using Proyecto25AM.Context;
+using Proyecto25AM.Services.IServices;
 
-namespace David_Stephen.Services.Services
+namespace Proyecto25AM.Services.Services
 {
     public class UsuarioServices : IUsuarioServices
     {

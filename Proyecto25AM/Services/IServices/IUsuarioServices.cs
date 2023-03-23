@@ -2,7 +2,7 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace David_Stephen.Services.Iservices
+namespace Proyecto25AM.Services.IServices
 {
     public interface IUsuarioServices
     {

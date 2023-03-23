@@ -1,14 +1,13 @@
-﻿
+﻿using Proyecto25AM.Services.Services;
 using Microsoft.EntityFrameworkCore;
-using David_Stephen.Context;
-using David_Stephen.Services.Iservices;
-using David_Stephen.Services.IServices;
-using David_Stephen.Services.Services;
+using Proyecto25AM.Context;
+using Proyecto25AM.Services.IServices;
 
-namespace David_Stephen
+namespace Proyecto25AM
 {
     public class Startup
     {
+        private readonly string _Mis_politicas = "MyCors";
         public Startup(IConfiguration configuration) 
         {
             Configuration = configuration;
@@ -17,14 +16,26 @@ namespace David_Stephen
 
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             services.AddControllers();
+
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            //agregar politicas
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _Mis_politicas, builder =>
+                {
+                    //builder.WithOrigins("www.panchito.com");
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                    .AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             //add connection bd
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             //Inyeccion de dependencias
             services.AddTransient<IUsuarioServices, UsuarioServices>();
             services.AddTransient<IRolServices, RolServices>();
@@ -48,6 +59,8 @@ namespace David_Stephen
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(_Mis_politicas);
 
             app.UseEndpoints(endpoints =>
             {

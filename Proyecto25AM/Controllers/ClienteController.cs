@@ -1,8 +1,7 @@
 ﻿using Domain.Dto;
 using Microsoft.AspNetCore.Mvc;
-using David_Stephen.Services.Iservices;
-using David_Stephen.Services.IServices;
-using David_Stephen.Services.Services;
+using Proyecto25AM.Services.IServices;
+using Proyecto25AM.Services.Services;
 
 namespace David_Stephen.Controllers
 {

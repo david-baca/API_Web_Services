@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace David_Stephen.Context
+namespace Proyecto25AM.Context
 {
     public class ApplicationDbContext : DbContext
     {
