@@ -11,7 +11,7 @@ namespace Domain.Entities
     public class Factura
     {
         [Key]
-        public int PkFactora { get; set; }
+        public int Pk { get; set; }
         [Required]
         public string RazonSocial { get; set; }
         [Required]
@@ -20,7 +20,9 @@ namespace Domain.Entities
         public string RFC { get; set; }
 
         [ForeignKey("Cliente")]
+        [Required]
         public int FkCliente { get; set; }
+        [Required]
         public Cliente Cliente { get; set; }
     }
 }

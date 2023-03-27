@@ -85,6 +85,12 @@ namespace Proyecto25AM.Services.Services
 
         public async Task<Response<Puesto>> EliminarPuesto(int id)
         {
+            var empleados = _context.Empleados.Where(x => x.FkPuesto == id).ToList();
+            if (empleados.Count > 0)
+            {
+                return new Response<Puesto>("No se puede eliminar este puesto por que existen Empledos referidos a el");
+            }
+
             var res = _context.Puestos.Find(id);
             _context.Puestos.Remove(res);
             await _context.SaveChangesAsync();
@@ -94,11 +100,13 @@ namespace Proyecto25AM.Services.Services
         public ActionResult<Response<Puesto>> ObtenerPuestoId(int id)
         {
             var res = _context.Puestos.Find(id);
+
             try
             {
+
                 if (res != null)
                 {
-                    res = _context.Puestos.FirstOrDefault(x => x.PkPuesto == id);
+                    res = _context.Puestos.FirstOrDefault(x => x.Pk == id);
                     return new Response<Puesto>(res);
                 }
                 else

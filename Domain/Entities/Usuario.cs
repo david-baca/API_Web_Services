@@ -11,15 +11,20 @@ namespace Domain.Entities
     public class Usuario
     {
         [Key]
-        public int PkUsuario { get; set; }
+        public int Pk { get; set; }
+        [Required]
         public string User { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public DateTime FechaRegistro { get; set; }
 
         [ForeignKey("Empleado")]
+        [Required]
         public int FkEmpleado { get; set; }
 
         [ForeignKey("Rol")]
+        [Required]
         public int FkRol { get; set; }
 
         public Empleado Empleado { get; set; }

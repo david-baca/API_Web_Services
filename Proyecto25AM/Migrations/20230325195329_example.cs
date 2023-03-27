@@ -15,7 +15,7 @@ namespace Proyecto25AM.Migrations
                 name: "Clientes",
                 columns: table => new
                 {
-                    PkCliente = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -25,53 +25,53 @@ namespace Proyecto25AM.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.PkCliente);
+                    table.PrimaryKey("PK_Clientes", x => x.Pk);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Departamentos",
                 columns: table => new
                 {
-                    PkDepartamento = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departamentos", x => x.PkDepartamento);
+                    table.PrimaryKey("PK_Departamentos", x => x.Pk);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Puestos",
                 columns: table => new
                 {
-                    PkPuesto = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Puestos", x => x.PkPuesto);
+                    table.PrimaryKey("PK_Puestos", x => x.Pk);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Rols",
                 columns: table => new
                 {
-                    PkRol = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rols", x => x.PkRol);
+                    table.PrimaryKey("PK_Rols", x => x.Pk);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Facturas",
                 columns: table => new
                 {
-                    PkFactora = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fecha = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -80,12 +80,12 @@ namespace Proyecto25AM.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facturas", x => x.PkFactora);
+                    table.PrimaryKey("PK_Facturas", x => x.Pk);
                     table.ForeignKey(
                         name: "FK_Facturas_Clientes_FkCliente",
                         column: x => x.FkCliente,
                         principalTable: "Clientes",
-                        principalColumn: "PkCliente",
+                        principalColumn: "Pk",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -93,35 +93,37 @@ namespace Proyecto25AM.Migrations
                 name: "Empleados",
                 columns: table => new
                 {
-                    PkEmpleado = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ciudad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FkPuesto = table.Column<int>(type: "int", nullable: true),
-                    FkDepartamento = table.Column<int>(type: "int", nullable: true)
+                    FkPuesto = table.Column<int>(type: "int", nullable: false),
+                    FkDepartamento = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empleados", x => x.PkEmpleado);
+                    table.PrimaryKey("PK_Empleados", x => x.Pk);
                     table.ForeignKey(
                         name: "FK_Empleados_Departamentos_FkDepartamento",
                         column: x => x.FkDepartamento,
                         principalTable: "Departamentos",
-                        principalColumn: "PkDepartamento");
+                        principalColumn: "Pk",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Empleados_Puestos_FkPuesto",
                         column: x => x.FkPuesto,
                         principalTable: "Puestos",
-                        principalColumn: "PkPuesto");
+                        principalColumn: "Pk",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
-                    PkUsuario = table.Column<int>(type: "int", nullable: false)
+                    Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     User = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -131,18 +133,18 @@ namespace Proyecto25AM.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.PkUsuario);
+                    table.PrimaryKey("PK_Usuarios", x => x.Pk);
                     table.ForeignKey(
                         name: "FK_Usuarios_Empleados_FkEmpleado",
                         column: x => x.FkEmpleado,
                         principalTable: "Empleados",
-                        principalColumn: "PkEmpleado",
+                        principalColumn: "Pk",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuarios_Rols_FkRol",
                         column: x => x.FkRol,
                         principalTable: "Rols",
-                        principalColumn: "PkRol",
+                        principalColumn: "Pk",
                         onDelete: ReferentialAction.Cascade);
                 });
 

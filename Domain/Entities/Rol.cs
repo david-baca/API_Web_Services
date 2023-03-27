@@ -9,8 +9,9 @@ namespace Domain.Entities
 {
     public class Rol
     {
-        [Key] 
-        public int PkRol { get; set; }
+        [Key]
+        public int Pk { get; set; }
+        [Required]
         public string Nombre { get; set; }
     }
 }

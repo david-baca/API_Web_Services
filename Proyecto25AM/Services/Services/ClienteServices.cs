@@ -102,12 +102,13 @@ namespace Proyecto25AM.Services.Services
 
         public ActionResult<Response<Cliente>> ObtenerCliId(int id)
         {
-            var res = _context.Clientes.Find(id);
+            var res = _context.Clientes.Find(id); 
+
             try
             {
                 if (res != null)
                 {
-                    res = _context.Clientes.FirstOrDefault(x => x.PkCliente == id);
+                    res = _context.Clientes.FirstOrDefault(x => x.Pk == id);
                     return new Response<Cliente>(res);
                 }
                 else

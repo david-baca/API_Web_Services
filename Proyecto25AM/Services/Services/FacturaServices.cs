@@ -1,4 +1,5 @@
-﻿using Domain.Dto;
+﻿using Azure.Core;
+using Domain.Dto;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace Proyecto25AM.Services.Services
             {
                 Mensaje = "La lista de las Facturas";
 
-                var response = await _context.Facturas.ToListAsync();
+                var response = await _context.Facturas.Include(x=>x.Cliente).ToListAsync();
 
                 if (response.Count > 0)
                 {
@@ -47,6 +48,13 @@ namespace Proyecto25AM.Services.Services
         {
             try
             {
+                var cliente = _context.Clientes.Find(request.FkCliente);
+                if(cliente == null)
+                {
+                    return new Response<Factura>("No esiste ese codigo de cliente actualmete");
+                }
+
+
                 Factura fac = new Factura()
                 {
                     
@@ -74,6 +82,12 @@ namespace Proyecto25AM.Services.Services
                 var res = _context.Facturas.Find(id);
                 if (res != null)
                 {
+                    var cliente = _context.Clientes.Find(i.FkCliente);
+                    if (cliente == null)
+                    {
+                        return new Response<Factura>("No esiste ese codigo de cliente actualmete");
+                    }
+
                     res.RazonSocial = i.RazonSocial;
                     res.Fecha = i.Fecha;
                     res.RFC = i.RFC;
@@ -105,7 +119,7 @@ namespace Proyecto25AM.Services.Services
             {
                 if (res != null)
                 {
-                    res = _context.Facturas.FirstOrDefault(x => x.PkFactora == id);
+                    res = _context.Facturas.Include(x => x.Cliente).FirstOrDefault(x => x.Pk == id);
                     return new Response<Factura>(res);
                 }
                 else

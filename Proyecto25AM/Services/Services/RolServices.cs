@@ -87,6 +87,12 @@ namespace Proyecto25AM.Services.Services
 
         public async Task<Response<Rol>> EliminarRol(int id)
         {
+            var usuarios = _context.Usuarios.Where(x => x.FkRol == id);
+            if(usuarios.Count() > 0)
+            {
+                return new Response<Rol>("No se puede eliminar este rol por que hay un usuario utilizandolo");
+            }
+
             var res = _context.Rols.Find(id);
             _context.Rols.Remove(res);
             await _context.SaveChangesAsync();
@@ -100,7 +106,7 @@ namespace Proyecto25AM.Services.Services
             {
                 if (res != null)
                 {
-                    res = _context.Rols.FirstOrDefault(x => x.PkRol == id);
+                    res = _context.Rols.FirstOrDefault(x => x.Pk == id);
                     return new Response<Rol>(res);
                 }
                 else

@@ -87,6 +87,13 @@ namespace Proyecto25AM.Services.Services
 
         public async Task<Response<Departamento>> EliminarDepa(int id)
         {
+            var empleados = _context.Empleados.Where(x => x.FkDepartamento == id).ToList();
+
+            if (empleados.Count > 0)
+            {
+                return new Response<Departamento>("No se puede eliminar este Departamento por que existen Empledos referidos a el");
+            }
+
             var res = _context.Departamentos.Find(id);
             _context.Departamentos.Remove(res);
             await _context.SaveChangesAsync();
@@ -96,11 +103,12 @@ namespace Proyecto25AM.Services.Services
         public ActionResult<Response<Departamento>> ObtenerDepId(int id)
         {
             var res = _context.Departamentos.Find(id);
+
             try
             {
                 if (res != null)
                 {
-                    res = _context.Departamentos.FirstOrDefault(x => x.PkDepartamento == id);
+                    res = _context.Departamentos.FirstOrDefault(x => x.Pk == id);
                     return new Response<Departamento>(res);
                 }
                 else

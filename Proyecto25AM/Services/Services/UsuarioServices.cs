@@ -1,4 +1,5 @@
-﻿using Domain.Dto;
+﻿using Azure.Core;
+using Domain.Dto;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace Proyecto25AM.Services.Services
             {
                 Mensaje = "La lista de usuarios";
 
-                var response = await _context.Usuarios.ToListAsync();
+                var response = await _context.Usuarios.Include(x=>x.Empleado).Include(x => x.Empleado.Puesto).Include(x => x.Empleado.Departamento).Include(x=>x.Rol).ToListAsync();
 
                 if (response.Count > 0)
                 {
@@ -51,11 +52,23 @@ namespace Proyecto25AM.Services.Services
         {
             try
             {
+                var empleado = _context.Empleados.Find(request.FkEmpleado);
+                var rol = _context.Rols.Find(request.FkRol);
+                if(empleado == null)
+                {
+                    return new Response<Usuario>("El codigo del Empleado que proporcionaste no esxiste actualmente");
+                }
+                if (rol == null)
+                {
+                    return new Response<Usuario>("El codigo del Rol que proporcionaste no esxiste actualmente");
+                }
+
+
                 Usuario user = new Usuario()
                 {
                     User = request.User,
                     Password = request.Password,
-                    FechaRegistro = request.FechaRegistro,
+                    FechaRegistro = DateTime.Now,
                     FkEmpleado = request.FkEmpleado,
                     FkRol = request.FkRol
                 };
@@ -78,6 +91,18 @@ namespace Proyecto25AM.Services.Services
                 var res = _context.Usuarios.Find(id);
                 if (res != null)
                 {
+                    var empleado = _context.Empleados.Find(i.FkEmpleado);
+                    var rol = _context.Rols.Find(i.FkRol);
+                    if (empleado == null)
+                    {
+                        return new Response<Usuario>("El codigo del Empleado que proporcionaste no esxiste actualmente");
+                    }
+                    if (rol == null)
+                    {
+                        return new Response<Usuario>("El codigo del Rol que proporcionaste no esxiste actualmente");
+                    }
+
+
                     res.User= i.User;
                     res.Password=i.Password;
                     res.FechaRegistro=i.FechaRegistro;
@@ -104,12 +129,12 @@ namespace Proyecto25AM.Services.Services
 
         public ActionResult<Response<Usuario>> ObtenerUserId(int id)
         {
-            var res = _context.Usuarios.Find(id);
+            var res = _context.Usuarios.Include(x => x.Empleado).Include(x => x.Empleado.Puesto).Include(x => x.Empleado.Departamento).Include(x => x.Rol).FirstOrDefault(x=>x.Pk==id);
             try
             {
                 if (res != null)
                 {
-                    res = _context.Usuarios.FirstOrDefault(x => x.PkUsuario == id);
+                    res = _context.Usuarios.FirstOrDefault(x => x.Pk == id);
                     return new Response<Usuario>(res);
                 }
                 else

@@ -1,4 +1,5 @@
-﻿using Domain.Dto;
+﻿using Azure.Core;
+using Domain.Dto;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,7 @@ namespace Proyecto25AM.Services.Services
             {
                 Mensaje = "La lista de Empleado";
 
-                var response = await _context.Empleados.ToListAsync();
-
+                var response = await _context.Empleados.Include(x=>x.Departamento).Include(x=>x.Puesto).ToListAsync();
                 if (response.Count > 0)
                 {
                     Mensaje = "La lista de Empleados";
@@ -46,6 +46,19 @@ namespace Proyecto25AM.Services.Services
         {
             try
             {
+                var puesto = _context.Puestos.Find(request.FkPuesto);
+                var departamento = _context.Departamentos.Find(request.FkDepartamento);
+
+                if (puesto == null)
+                {
+                    return new Response<Empleado>("no exite ese codigo de puesto actualmente");
+                }
+                if (departamento == null)
+                {
+                    return new Response<Empleado>("no exite ese codigo de departamento actualmente");
+                }
+               
+
                 Empleado Emple = new Empleado()
                 {
                     //User = request.User,
@@ -72,8 +85,22 @@ namespace Proyecto25AM.Services.Services
             try
             {
                 var res = _context.Empleados.Find(id);
+
                 if (res != null)
                 {
+                    var puesto = _context.Puestos.Find(i.FkPuesto);
+                    var departamento = _context.Departamentos.Find(i.FkDepartamento);
+
+                    if (puesto == null)
+                    {
+                        return new Response<Empleado>("no exite ese codigo de puesto actualmente");
+                    }
+                    if (departamento == null)
+                    {
+                        return new Response<Empleado>("no exite ese codigo de departamento actualmente");
+                    }
+
+
                     res.Nombre= i.Nombre;
                     res.Apellidos = i.Apellidos;
                     res.Direccion= i.Direccion;
@@ -105,7 +132,7 @@ namespace Proyecto25AM.Services.Services
             {
                 if (res != null)
                 {
-                    res = _context.Empleados.FirstOrDefault(x => x.PkEmpleado == id);
+                    res = _context.Empleados.Include(x => x.Departamento).Include(x => x.Puesto).FirstOrDefault(x => x.Pk == id);
                     return new Response<Empleado>(res);
                 }
                 else
